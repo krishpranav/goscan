@@ -2,6 +2,8 @@ package cli
 
 import (
 	"fmt"
+	"io/ioutil"
+	"path/filepath"
 	"strings"
 
 	"github.com/c-bata/go-prompt"
@@ -449,4 +451,24 @@ func getEnumerationSuggestions() []prompt.Suggest {
 	}
 
 	return s
+}
+
+func fileCompleter(d prompt.Document) []prompt.Suggest {
+	path := d.GetWordBeforeCursor()
+	if strings.HasPrefix(path, "./") {
+		path = path[2:]
+	}
+	dir := filepath.Dir(path)
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return []prompt.Suggest{}
+	}
+	suggests := make([]prompt.Suggest, 0, len(files))
+	for _, f := range files {
+		// if !f.IsDir() {
+		// 	continue
+		// }
+		suggests = append(suggests, prompt.Suggest{Text: filepath.Join(dir, f.Name())})
+	}
+	return prompt.FilterHasPrefix(suggests, path, false)
 }
