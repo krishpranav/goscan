@@ -2,17 +2,18 @@ package enum
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/krishpranav/goscan/core/utils"
+	"strings"
 )
 
 func (s *EnumScan) EnumSSH() {
 	for _, port := range s.Target.GetPorts(utils.Config.DB) {
+		// Enumerate only if port is open
 		if port.Status == "open" {
+			// Dispatch the correct scanner
 			service := port.GetService(utils.Config.DB)
 			if port.Number == 22 || port.Number == 2222 || strings.Contains(strings.ToLower(service.Name), "ssh") {
-
+				// Start Enumerating
 				utils.Config.Log.LogInfo(fmt.Sprintf("Starting Enumeration: %s:%d (%s)", s.Target.Address, port.Number, service.Name))
 
 				// -----------------------------------------------------------------------
@@ -26,6 +27,7 @@ func (s *EnumScan) EnumSSH() {
 						output,
 						s.Target.Address, port.Number,
 					)
+					// Run command
 					s.runCmd(cmd)
 				}
 			}

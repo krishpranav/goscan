@@ -2,19 +2,21 @@ package enum
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/krishpranav/goscan/core/utils"
+	"strings"
 )
 
 func (s *EnumScan) EnumSMB() {
 	for _, port := range s.Target.GetPorts(utils.Config.DB) {
+		// Enumerate only if port is open
 		if port.Status == "open" {
+			// Dispatch the correct scanner
 			service := port.GetService(utils.Config.DB)
 			if port.Number == 139 || port.Number == 445 ||
 				strings.Contains(strings.ToLower(service.Name), "smb") ||
 				strings.Contains(strings.ToLower(service.Name), "microsoft-ds") ||
 				strings.Contains(strings.ToLower(service.Name), "netbios") {
+				// Start Enumerating
 				utils.Config.Log.LogInfo(fmt.Sprintf("Starting Enumeration: %s:%d (%s)", s.Target.Address, port.Number, service.Name))
 
 				// -----------------------------------------------------------------------

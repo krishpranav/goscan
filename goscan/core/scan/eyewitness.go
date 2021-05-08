@@ -2,12 +2,14 @@ package scan
 
 import (
 	"fmt"
-	"path/filepath"
-
-	"github.com/krishpranav/goscan/core/model"
 	"github.com/krishpranav/goscan/core/utils"
+	"github.com/krishpranav/goscan/core/model"
+	"path/filepath"
 )
 
+// ---------------------------------------------------------------------------------------
+// DISPATCHER
+// ---------------------------------------------------------------------------------------
 func EyeWitness() {
 	// Set output folder
 	folder_eyewitness := filepath.Join(utils.Config.Outfolder, "eyewitness")

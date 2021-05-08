@@ -2,16 +2,21 @@ package scan
 
 import (
 	"fmt"
-	"time"
-
+	go_nmap "github.com/lair-framework/go-nmap"
 	"github.com/krishpranav/goscan/core/model"
 	"github.com/krishpranav/goscan/core/utils"
-	go_nmap "github.com/lair-framework/go-nmap"
+	"time"
 )
 
+// ---------------------------------------------------------------------------------------
+// CONSTANTS
+// ---------------------------------------------------------------------------------------
 var notificationDelay time.Duration = time.Duration(utils.Const_notification_delay_unit) * time.Second
 var ScansList = []*NmapScan{}
 
+// ---------------------------------------------------------------------------------------
+// DISPATCHER
+// ---------------------------------------------------------------------------------------
 func ScanPort(kind string, target string) {
 	folder := "portscan"
 
@@ -47,6 +52,9 @@ func ScanPort(kind string, target string) {
 	}
 }
 
+// ---------------------------------------------------------------------------------------
+// SCAN LAUNCHER
+// ---------------------------------------------------------------------------------------
 func execScan(name, target, folder, file, nmapArgs string) {
 	hosts := model.GetAllHosts(utils.Config.DB)
 	for _, h := range hosts {
@@ -54,9 +62,9 @@ func execScan(name, target, folder, file, nmapArgs string) {
 		//   - target is ALL
 		//   - or if target is TO_ANALYZE and host still need to be analyzed
 		//   - or if host is the selected one
-		if target == "ALL" ||
-			(target == "TO_ANALYZE" && h.Step == model.NEW.String()) ||
-			target == h.Address {
+		if target == "ALL" || 
+		   (target == "TO_ANALYZE" && h.Step == model.NEW.String()) || 
+		   target == h.Address {
 			temp := h
 			fname := fmt.Sprintf("%s_%s", file, h.Address)
 			go worker(name, &temp, folder, fname, nmapArgs)
@@ -64,6 +72,9 @@ func execScan(name, target, folder, file, nmapArgs string) {
 	}
 }
 
+// ---------------------------------------------------------------------------------------
+// WORKER
+// ---------------------------------------------------------------------------------------
 func worker(name string, h *model.Host, folder string, file string, nmapArgs string) {
 	// Instantiate new NmapScan
 	s := NewScan(name, h.Address, folder, file, nmapArgs)
@@ -82,6 +93,9 @@ func worker(name string, h *model.Host, folder string, file string, nmapArgs str
 }
 
 func ProcessResults(h *model.Host, record go_nmap.Host) {
+	// -------------------------------------------------------------------------------
+	// Extract OS
+	// -------------------------------------------------------------------------------
 	if len(record.Os.OsMatches) != 0 && record.Os.OsMatches[0].Name != "" {
 		model.Mutex.Lock()
 		osname := record.Os.OsMatches[0].Name
@@ -89,6 +103,9 @@ func ProcessResults(h *model.Host, record go_nmap.Host) {
 		utils.Config.DB.Save(&h)
 		model.Mutex.Unlock()
 	}
+	// -------------------------------------------------------------------------------
+	// Parse ports
+	// -------------------------------------------------------------------------------
 	for _, port := range record.Ports {
 		// Create new port, will add to db if new
 		np, _ := model.AddPort(utils.Config.DB, port.PortId, port.Protocol, port.State.State, h)
@@ -99,6 +116,9 @@ func ProcessResults(h *model.Host, record go_nmap.Host) {
 		}
 	}
 
+	// -------------------------------------------------------------------------------
+	// Update status of host
+	// -------------------------------------------------------------------------------
 	model.Mutex.Lock()
 	h.Step = model.SCANNED.String()
 	utils.Config.DB.Save(&h)

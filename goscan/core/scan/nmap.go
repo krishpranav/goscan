@@ -2,15 +2,17 @@ package scan
 
 import (
 	"fmt"
+	go_nmap "github.com/lair-framework/go-nmap"
+	"github.com/krishpranav/goscan/core/model"
+	"github.com/krishpranav/goscan/core/utils"
 	"io/ioutil"
 	"path/filepath"
 	"time"
-
-	"github.com/krishpranav/goscan/core/model"
-	"github.com/krishpranav/goscan/core/utils"
-	go_nmap "github.com/lair-framework/go-nmap"
 )
 
+// ---------------------------------------------------------------------------------------
+// NMAP INTERACTION
+// ---------------------------------------------------------------------------------------
 type NmapScan model.Scan
 
 // Constructor for NmapScan
@@ -89,6 +91,10 @@ func ParseOutput(sweepXML string) *go_nmap.NmapRun {
 	return res
 }
 
+
+// ---------------------------------------------------------------------------------------
+// SCAN MANAGEMENT
+// ---------------------------------------------------------------------------------------
 func ReportStatusNmap() {
 	ticker := time.Tick(notificationDelay)
 	for {

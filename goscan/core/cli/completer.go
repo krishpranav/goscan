@@ -2,13 +2,12 @@ package cli
 
 import (
 	"fmt"
-	"io/ioutil"
-	"path/filepath"
-	"strings"
-
 	"github.com/c-bata/go-prompt"
 	"github.com/krishpranav/goscan/core/model"
 	"github.com/krishpranav/goscan/core/utils"
+	"io/ioutil"
+	"path/filepath"
+	"strings"
 )
 
 func excludeOptions(args []string) []string {
@@ -321,41 +320,41 @@ func argumentsCompleter(d prompt.Document, args []string) []prompt.Suggest {
 		}
 		if len(args) == 3 {
 			switch args[1] {
-			case "domain":
-				subcommands := []prompt.Suggest{
-					{Text: "users", Description: "Extract users from enumeration data"},
-					{Text: "hosts", Description: "Extract hosts from enumeration data"},
-					{Text: "servers", Description: "Extract servers from enumeration data"},
-				}
-				return prompt.FilterHasPrefix(subcommands, args[2], true)
-			case "dns":
-				subcommands := []prompt.Suggest{
-					{Text: "DISCOVERY", Description: "Enumerate DNS (nmap, dnsrecon, dnsenum)"},
-					{Text: "BRUTEFORCE", Description: "Bruteforce DNS"},
-					{Text: "BRUTEFORCE_REVERSE", Description: "Reverse Bruteforce DNS"},
-				}
-				return prompt.FilterHasPrefix(subcommands, args[2], true)
+				case "domain":			
+					subcommands := []prompt.Suggest{
+						{Text: "users", Description: "Extract users from enumeration data"},
+						{Text: "hosts", Description: "Extract hosts from enumeration data"},
+						{Text: "servers", Description: "Extract servers from enumeration data"},
+					}
+					return prompt.FilterHasPrefix(subcommands, args[2], true)
+				case "dns":
+					subcommands := []prompt.Suggest{
+						{Text: "DISCOVERY", Description: "Enumerate DNS (nmap, dnsrecon, dnsenum)"},
+						{Text: "BRUTEFORCE", Description: "Bruteforce DNS"},
+						{Text: "BRUTEFORCE_REVERSE", Description: "Reverse Bruteforce DNS"},
+					}
+					return prompt.FilterHasPrefix(subcommands, args[2], true)
 			}
 		}
 		if len(args) == 4 {
 			switch args[1] {
-			case "dns":
-				subcommands := []prompt.Suggest{
-					{Text: "domain.com", Description: "Target domain"},
-				}
-				return prompt.FilterHasPrefix(subcommands, args[3], true)
+				case "dns":
+					subcommands := []prompt.Suggest{
+						{Text: "domain.com", Description: "Target domain"},
+					}
+					return prompt.FilterHasPrefix(subcommands, args[3], true)
 			}
 		}
 		if len(args) == 5 {
 			switch args[1] {
-			case "dns":
-				switch args[2] {
-				case "BRUTEFORCE_REVERSE":
-					subcommands := []prompt.Suggest{
-						{Text: "10.0.0.10", Description: "Base IP"},
+				case "dns":
+					switch args[2] {
+						case "BRUTEFORCE_REVERSE":
+							subcommands := []prompt.Suggest{
+								{Text: "10.0.0.10", Description: "Base IP"},
+							}
+							return prompt.FilterHasPrefix(subcommands, args[4], true)
 					}
-					return prompt.FilterHasPrefix(subcommands, args[4], true)
-				}
 			}
 		}
 
@@ -399,7 +398,7 @@ func getSweepSuggestions() []prompt.Suggest {
 		Description: "Sweep all targets (even those already sweeped)",
 	}
 	s[1] = prompt.Suggest{
-		Text:        "TO_ANALYZE",
+		Text:		"TO_ANALYZE",
 		Description: "Sweep only targets that haven't been sweeped yet",
 	}
 
@@ -421,7 +420,7 @@ func getPortScanSuggestions() []prompt.Suggest {
 		Description: "Portscan all targets (even those already scanned)",
 	}
 	s[1] = prompt.Suggest{
-		Text:        "TO_ANALYZE",
+		Text:		"TO_ANALYZE",
 		Description: "Scan only targets that haven't been scanned yet",
 	}
 

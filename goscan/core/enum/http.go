@@ -2,20 +2,21 @@ package enum
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/krishpranav/goscan/core/utils"
+	"strings"
 )
 
 func (s *EnumScan) EnumHTTP() {
 	for _, port := range s.Target.GetPorts(utils.Config.DB) {
+		// Enumerate only if port is open
 		if port.Status == "open" {
+			// Dispatch the correct scanner
 			service := port.GetService(utils.Config.DB)
 			if port.Number == 80 || port.Number == 443 || port.Number == 8080 ||
 				strings.Contains(strings.ToLower(service.Name), "http") ||
 				strings.Contains(strings.ToLower(service.Name), "https") ||
 				strings.Contains(strings.ToLower(service.Name), "ssl/http") {
-
+				// Start Enumerating
 				utils.Config.Log.LogInfo(fmt.Sprintf("Starting Enumeration: %s:%d (%s)", s.Target.Address, port.Number, service.Name))
 				protocol := "http"
 				if strings.Contains(strings.ToLower(service.Name), "https") ||

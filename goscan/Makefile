@@ -12,8 +12,8 @@ init:  ## Init the project.
 
 .PHONY: setup
 setup:  ## Setup for required tools.
-	go get -u github.com/golang/lint/golint
-	go get -u golang.org/x/tools/cmd/goimports
+	go get github.com/golang/lint/golint
+	go get golang.org/x/tools/cmd/goimports
 	go get -u github.com/golang/dep/cmd/dep
 	dep ensure
 
@@ -39,7 +39,7 @@ cross: main.go  ## Build binaries for cross platform.
 	# LINUX 64
 	GOOS=linux GOARCH=amd64 make build
 	zip pkg/goscan_$(VERSION)_linux_amd64.zip goscan
-	# LINUX 32
+	# LINUX 32
 	CGO_ENABLED=1 CC="gcc -m32" GOOS=linux GOARCH=386 make build
 	zip pkg/goscan_$(VERSION)_linux_386.zip goscan
 

@@ -2,7 +2,6 @@ package scan
 
 import (
 	"fmt"
-
 	"github.com/krishpranav/goscan/core/utils"
 )
 

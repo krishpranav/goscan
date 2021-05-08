@@ -2,12 +2,11 @@ package model
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"os"
 	"strings"
 	"sync"
-
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 var (
@@ -15,18 +14,18 @@ var (
 )
 
 type Step int
-
 const (
 	NOT_DEFINED Step = iota
-	IMPORTED         // targets
-	SWEEPED          // targets
-	NEW              // hosts
-	SCANNED          // hosts
+	IMPORTED		// targets
+	SWEEPED			// targets
+	NEW				// hosts
+	SCANNED			// hosts
 )
-
 func (s Step) String() string {
 	return [...]string{"NOT_DEFINED", "IMPORTED", "SWEEPED", "NEW", "SCANNED"}[s]
 }
+
+
 
 // ---------------------------------------------------------------------------------------
 // UTILS
@@ -149,6 +148,7 @@ func (s *Service) GetPort(db *gorm.DB) *Port {
 	return port
 }
 
+
 // ---------------------------------------------------------------------------------------
 // PORT
 // ---------------------------------------------------------------------------------------
@@ -200,6 +200,8 @@ func (p *Port) GetHost(db *gorm.DB) *Host {
 	db.Where("id = ?", p.HostID).Find(&host)
 	return host
 }
+
+
 
 // ---------------------------------------------------------------------------------------
 // HOST

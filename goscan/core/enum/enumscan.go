@@ -2,21 +2,18 @@ package enum
 
 import (
 	"fmt"
-	"path/filepath"
-	"time"
-
 	"github.com/krishpranav/goscan/core/model"
 	"github.com/krishpranav/goscan/core/scan"
 	"github.com/krishpranav/goscan/core/utils"
+	"path/filepath"
+	"time"
 )
 
 // ---------------------------------------------------------------------------------------
 // ENUMSCAN
 // ---------------------------------------------------------------------------------------
 var notificationDelay time.Duration = time.Duration(utils.Const_notification_delay_unit) * time.Second
-
 type EnumScan model.Enumeration
-
 var EnumList = []*EnumScan{}
 
 func NewEnumScan(target *model.Host, kind, polite string) *EnumScan {

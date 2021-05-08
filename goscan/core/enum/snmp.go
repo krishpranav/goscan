@@ -2,9 +2,8 @@ package enum
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/krishpranav/goscan/core/utils"
+	"strings"
 )
 
 func (s *EnumScan) EnumSNMP() {

@@ -2,11 +2,13 @@ package scan
 
 import (
 	"fmt"
-
 	"github.com/krishpranav/goscan/core/model"
 	"github.com/krishpranav/goscan/core/utils"
 )
 
+// ---------------------------------------------------------------------------------------
+// DISPATCHER
+// ---------------------------------------------------------------------------------------
 func ScanSweep(kind string, target string) {
 	// Dispatch scan
 	switch kind {
@@ -24,9 +26,13 @@ func ScanSweep(kind string, target string) {
 func execSweep(name, target, folder, file, nmapArgs string) {
 	targets := model.GetAllTargets(utils.Config.DB)
 	for _, h := range targets {
-		if target == "ALL" ||
-			(target == "TO_ANALYZE" && h.Step == model.IMPORTED.String()) ||
-			target == h.Address {
+		// Scan only if:
+		//   - target is ALL
+		//   - or if target is TO_ANALYZE and host still need to be analyzed
+		//   - or if host is the selected one
+		if target == "ALL" || 
+		   (target == "TO_ANALYZE" && h.Step == model.IMPORTED.String()) || 
+		   target == h.Address {
 			temp := h
 			fname := fmt.Sprintf("%s_%s", file, h.Address)
 			go workerSweep(name, &temp, folder, fname, nmapArgs)
@@ -34,6 +40,9 @@ func execSweep(name, target, folder, file, nmapArgs string) {
 	}
 }
 
+// ---------------------------------------------------------------------------------------
+// WORKER
+// ---------------------------------------------------------------------------------------
 func workerSweep(name string, h *model.Target, folder string, file string, nmapArgs string) {
 	// Instantiate new NmapScan
 	s := NewScan(name, h.Address, folder, file, nmapArgs)

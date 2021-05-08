@@ -2,16 +2,18 @@ package utils
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
+	"github.com/krishpranav/goscan/core/model"
 	"os"
 	"os/exec"
 	"os/user"
 	"path/filepath"
 	"strings"
-
-	"github.com/jinzhu/gorm"
-	"github.com/krishpranav/goscan/core/model"
 )
 
+// ---------------------------------------------------------------------------------------
+// CONSTANTS
+// ---------------------------------------------------------------------------------------
 var Config config
 
 var Const_notification_delay_unit = 10
@@ -41,6 +43,9 @@ var WORDLIST_HYDRA_SSH_PWD = WORDLIST_MSF_PWDS
 var WORDLIST_HYDRA_FTP_USER = WORDLIST_FUZZ_NAMELIST
 var WORDLIST_HYDRA_FTP_PWD = WORDLIST_MSF_PWDS
 
+// ---------------------------------------------------------------------------------------
+// CONFIG
+// ---------------------------------------------------------------------------------------
 type config struct {
 	Outfolder string
 	Log       *Logger
@@ -52,7 +57,7 @@ type config struct {
 // From now on it will be accessible as utils.Config
 func InitConfig() {
 	Config = config{}
-
+	
 	// Initialize logger
 	Config.Log = InitLogger()
 
@@ -87,6 +92,11 @@ func ChangeOutFolder(path string) {
 	Config.Log.LogDebug("Connected to DB")
 }
 
+
+// ---------------------------------------------------------------------------------------
+// MANAGE COMMANDS
+// ---------------------------------------------------------------------------------------
+// Tokenize the command line
 func ParseCmd(s string) (string, []string) {
 	// Remove trailing spaces
 	s = strings.TrimSpace(s)
@@ -125,6 +135,10 @@ func ShellCmd(cmd string) (string, error) {
 	return string(output), err
 }
 
+// ---------------------------------------------------------------------------------------
+// MANAGE FILES
+// ---------------------------------------------------------------------------------------
+// Ensures the program is run as root
 func CheckSudo() {
 	if os.Geteuid() != 0 {
 		Config.Log.LogError("This program need to have root permission to execute nmap for now.")
@@ -132,6 +146,7 @@ func CheckSudo() {
 	}
 }
 
+// Ensure the directory exists, or creates it otherwise
 func EnsureDir(dir string) {
 	// Create a directory if doesn't exist
 	if _, err := os.Stat(dir); os.IsNotExist(err) {

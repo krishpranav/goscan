@@ -15,9 +15,19 @@ var (
 	version string
 )
 
+// ---------------------------------------------------------------------------------------
+// INIT
+// ---------------------------------------------------------------------------------------
 func showBanner() {
 	name := fmt.Sprintf("goscan (v.%s)", version)
-	banner := `GOSCAN`
+	banner := `
+_________     ___________________________   __
+__  ____/_______  ___/_  ____/__    |__  | / /
+_  / __ _  __ \____ \_  /    __  /| |_   |/ / 
+/ /_/ / / /_/ /___/ // /___  _  ___ |  /|  /  
+\____/  \____//____/ \____/  /_/  |_/_/ |_/   
+											
+	`
 
 	// Shell width
 	all_lines := strings.Split(banner, "\n")
@@ -31,12 +41,18 @@ func showBanner() {
 }
 
 func initCore() {
+	// Check sudo
 	utils.CheckSudo()
+	// Show banner
 	showBanner()
+	// Initialize global config (db, logger, etc.)
+	// From now on it will be accessible as utils.Config
 	utils.InitConfig()
 }
 
-// main function
+// ---------------------------------------------------------------------------------------
+// MAIN
+// ---------------------------------------------------------------------------------------
 func main() {
 	// Setup core
 	initCore()

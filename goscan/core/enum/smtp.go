@@ -2,16 +2,18 @@ package enum
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/krishpranav/goscan/core/utils"
+	"strings"
 )
 
 func (s *EnumScan) EnumSMTP() {
 	for _, port := range s.Target.GetPorts(utils.Config.DB) {
+		// Enumerate only if port is open
 		if port.Status == "open" {
+			// Dispatch the correct scanner
 			service := port.GetService(utils.Config.DB)
 			if port.Number == 25 || strings.Contains(strings.ToLower(service.Name), "smtp") {
+				// Start Enumerating
 				utils.Config.Log.LogInfo(fmt.Sprintf("Starting Enumeration: %s:%d (%s)", s.Target.Address, port.Number, service.Name))
 
 				// -----------------------------------------------------------------------

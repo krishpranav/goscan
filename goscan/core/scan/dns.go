@@ -3,11 +3,10 @@ package scan
 import (
 	"bufio"
 	"fmt"
+	"github.com/krishpranav/goscan/core/utils"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/krishpranav/goscan/core/utils"
 )
 
 // ---------------------------------------------------------------------------------------

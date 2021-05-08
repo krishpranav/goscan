@@ -13,6 +13,10 @@ func Connected() bool {
 	return true
 }
 
+// ---------------------------------------------------------------------------------------
+// IP addresses
+// ---------------------------------------------------------------------------------------
+// Returns all the addresses of the local network interfaces
 func ParseLocalIP() map[string]string {
 	// Returns a Map of interface:subnet
 	res := make(map[string]string)
