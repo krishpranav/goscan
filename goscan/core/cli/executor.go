@@ -7,10 +7,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/marco-lancini/goscan/core/enum"
-	"github.com/marco-lancini/goscan/core/model"
-	"github.com/marco-lancini/goscan/core/scan"
-	"github.com/marco-lancini/goscan/core/utils"
+	"github.com/krishpranav/goscan/core/enum"
+	"github.com/krishpranav/goscan/core/model"
+	"github.com/krishpranav/goscan/core/scan"
+	"github.com/krishpranav/goscan/core/utils"
 	"github.com/olekukonko/tablewriter"
 )
 

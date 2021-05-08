@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/marco-lancini/goscan/core/model"
-	"github.com/marco-lancini/goscan/core/utils"
+	"github.com/krishpranav/goscan/core/model"
+	"github.com/krishpranav/goscan/core/utils"
 )
 
 func excludeOptions(args []string) []string {
