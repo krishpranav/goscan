@@ -2,15 +2,21 @@ package enum
 
 import (
 	"fmt"
+	"path/filepath"
+	"time"
+
 	"github.com/krishpranav/goscan/core/model"
 	"github.com/krishpranav/goscan/core/scan"
 	"github.com/krishpranav/goscan/core/utils"
-	"path/filepath"
-	"time"
 )
 
+// ---------------------------------------------------------------------------------------
+// ENUMSCAN
+// ---------------------------------------------------------------------------------------
 var notificationDelay time.Duration = time.Duration(utils.Const_notification_delay_unit) * time.Second
+
 type EnumScan model.Enumeration
+
 var EnumList = []*EnumScan{}
 
 func NewEnumScan(target *model.Host, kind, polite string) *EnumScan {
@@ -108,6 +114,10 @@ func (s *EnumScan) Run() {
 	// Post-scan checks
 	s.postScan()
 }
+
+// ---------------------------------------------------------------------------------------
+// SCAN LAUNCHER
+// ---------------------------------------------------------------------------------------
 func ScanEnumerate(kind, polite, target string) {
 	utils.Config.Log.LogInfo("Starting service enumeration")
 	hosts := model.GetAllHosts(utils.Config.DB)
@@ -131,6 +141,9 @@ func workerEnum(h *model.Host, kind string, polite string) {
 	s.Run()
 }
 
+// ---------------------------------------------------------------------------------------
+// SCAN MANAGEMENT
+// ---------------------------------------------------------------------------------------
 func ReportStatusEnum() {
 	ticker := time.Tick(notificationDelay)
 	for {
