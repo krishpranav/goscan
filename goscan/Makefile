@@ -12,8 +12,8 @@ init:  ## Init the project.
 
 .PHONY: setup
 setup:  ## Setup for required tools.
-	go get github.com/golang/lint/golint
-	go get golang.org/x/tools/cmd/goimports
+	go get -u github.com/golang/lint/golint
+	go get -u golang.org/x/tools/cmd/goimports
 	go get -u github.com/golang/dep/cmd/dep
 	dep ensure
 
